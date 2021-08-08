@@ -30,6 +30,7 @@ clone this project https://github.com/jasonczx27/maps into your cloning environm
 1. Check if package.json is present in first layer of the project module, 'api' and 'web', there should be 2 and in right place
 2. You would like to remove the current node_modules, in shell script: 'rm -rf /node_modules' at the respective proejct module, run 'npm install'
 3. Try to delete the package-lock.json as well if you're still stuck after steps 1-2, run 'npm install' after done so.
+4. If you see issues on vulnurability you may replace the 'npm install' with 'npm install --force' in (2)
 #Dependencies
 MAP - google-map-react - https://www.npmjs.com/package/google-map-react
 Geolocations - geolib - https://www.npmjs.com/package/geolib
