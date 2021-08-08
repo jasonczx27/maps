@@ -24,7 +24,9 @@ app.post("/maps", async function (req, res) {
 
     try {
         const result = await drivers.getDrivers(n)
-        res.status(200).send(result)
+        let toReturn = result !== [] ? JSON.parse(result).drivers : []
+
+        res.status(200).send(toReturn)
     }
     catch (e) {
         console.log("problem on request")
