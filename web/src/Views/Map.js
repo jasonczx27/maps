@@ -33,7 +33,7 @@ export default function Maps() {
     const Pin = () => {
         configmyZoom(20)
         setcurLoc(loc)
-        console.log(loc)
+
     }
     useEffect(() => {
         initLoc()
@@ -133,7 +133,7 @@ export default function Maps() {
                                     }}
                                     lat={driver.location.lat}
                                     lng={driver.location.lng}
-                                > {`Driver ${i}--[${driver.distance} m away]`} </Tag>
+                                > {`Taxi[${i}]--[${driver.distance} m away]`} </Tag>
 
 
 
