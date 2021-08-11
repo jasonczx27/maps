@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react"
-import { Row, Col, Slider, message, Tag, Button } from "antd"
+import { Row, Col, Slider, message, Tag, Button, notification } from "antd"
 import {
 
     BankTwoTone,
@@ -55,17 +55,59 @@ export default function Maps() {
     function initLoc() {
         configmyZoom(13)
         message.loading("initiating location", () => {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                setmyLoc({ lat: position.coords.latitude, lng: position.coords.longitude })
-                configmyZoom(13)
-                message.loading("finding closest office from you", () => {
-                    const nearest = findNearest({ latitude: position.coords.latitude, longitude: position.coords.longitude }, offices.map(office => { return { latitude: office.lat, longitude: office.lng } }))
-                    setLoc({ lat: nearest.latitude, lng: nearest.longitude })
-                    setcurLoc({ lat: nearest.latitude, lng: nearest.longitude })
-                    configmyZoom(5)
-                    message.success("done")
-                })
-            });
+
+
+            navigator.permissions.query({ name: 'geolocation' }).then((perm) => {
+                if (perm.state !== "granted") {
+                    notification.warning({
+                        key: "locdisabled",
+                        message: "Location not enabled",
+                        description:
+                            <div>
+                                <p>
+                                    This page could not work well without location access.
+                                </p>
+                                <br />
+                                <b>
+                                    We are using your location info to:
+                                </b>
+                                <ul>
+                                    <li>
+                                        Determine the closest office to you
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        Find you Taxis around you
+                                    </li>
+                                </ul>
+                                <b>
+                                    Please allow location access for this browser
+                                </b>
+                            </div>,
+                        placement: "bottomRight",
+                        duration: 0
+                    })
+
+                }
+                else {
+                    navigator.geolocation.getCurrentPosition(function (position, err) {
+                        if (position) {
+                            setmyLoc({ lat: position.coords.latitude, lng: position.coords.longitude })
+                            configmyZoom(13)
+                            message.loading("finding closest office from you", () => {
+                                const nearest = findNearest({ latitude: position.coords.latitude, longitude: position.coords.longitude }, offices.map(office => { return { latitude: office.lat, longitude: office.lng } }))
+                                setLoc({ lat: nearest.latitude, lng: nearest.longitude })
+                                setcurLoc({ lat: nearest.latitude, lng: nearest.longitude })
+                                configmyZoom(5)
+                                message.success("done")
+                            })
+                        }
+                    });
+
+                }
+            })
+
         })
     }
     const initDriver = async (n) => {
