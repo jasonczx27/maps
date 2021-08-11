@@ -55,8 +55,6 @@ export default function Maps() {
     function initLoc() {
         configmyZoom(13)
         message.loading("initiating location", () => {
-
-
             navigator.permissions.query({ name: 'geolocation' }).then((perm) => {
                 if (perm.state !== "granted") {
                     notification.warning({
